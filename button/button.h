@@ -10,7 +10,16 @@
 
 #include "button_port.h"
 
+/** \typedef typedef void (*BtnClbck)(ButtonPort buttons);
+ *  \brief Type of "press" and "release" events callbacks
+ *
+ * @param buttons Mask of "pressed" or "released" buttons
+ */
 typedef void (*BtnClbck)(ButtonPort buttons);
+
+/** \class typedef struct Button Button
+ *  \brief Button class
+ */
 typedef struct Button {
 	BtnClbck pressedClbck;
 	BtnClbck releasedClbck;
@@ -18,6 +27,12 @@ typedef struct Button {
 	ButtonPort previous;
 } Button;
 
+/** \fn static inline void Button_ctor(Button * const me, BtnClbck pressed, BtnClbck released)
+ *
+ * @param me	pointer to instance of Button class
+ * @param pressed pointer to press event callback
+ * @param released pointer to released event callback
+ */
 static inline void Button_ctor(Button * const me, BtnClbck pressed, BtnClbck released)
 {
 	me->pressedClbck = pressed;
@@ -26,6 +41,14 @@ static inline void Button_ctor(Button * const me, BtnClbck pressed, BtnClbck rel
 	me->previous = (ButtonPort)(BUTTON_ACTIVE_HIGH^BUTTON_MASK);
 }
 
+/** \fn static inline void Button_service(Button * const me)
+ *  \brief Button polling function
+ *
+ *  Function should be invoked periodically. Period should allow realizing
+ *  reliable debouncing.
+ *
+ * @param me	pointer to instance of Button class
+ */
 static inline void Button_service(Button * const me)
 {
 	ButtonPort current = Button_raw();
@@ -50,11 +73,23 @@ static inline void Button_service(Button * const me)
 
 }
 
+/** \fn static inline void Button_registerPress(Button * const me, BtnClbck press)
+ *  \brief Registers callback for press event
+ *
+ * @param me pointer to instance of Button class
+ * @param press pointer to press event callback
+ */
 static inline void Button_registerPress(Button * const me, BtnClbck press)
 {
 	me->pressedClbck = press;
 }
 
+/** \fn static inline void Button_registerRelease(Button * const me, BtnClbck release)
+ *  \brief Registers callback for release event
+ *
+ * @param me pointer to instance of Button class
+ * @param release pointer to released event callback
+ */
 static inline void Button_registerRelease(Button * const me, BtnClbck release)
 {
 	me->releasedClbck = release;

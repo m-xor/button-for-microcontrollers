@@ -14,16 +14,21 @@
 #define BTN1 (1<<3)
 #define BTN2 (1<<5)
 
+/** \def BUTTON_IN_PORT
+ *  \brief Defines input port button(s) is(are) attached to
+ */
 #define BUTTON_IN_PORT PINC
 
-
-/** \def
- *  \brief Mandatory definition
+/** \def BUTTON_MASK
+ *  \brief Defines mask for all observed inputs
  *
+ *  \warning Mandatory definition
  */
 #define BUTTON_MASK (BTN0|BTN1|BTN2)
-/** \def
- *  \brief Mandatory definition
+
+/** \def BUTTON_ACTIVE_HIGH
+ *  \brief Defines mask for inputs which have active state HIGH
+ *  \warning Mandatory definition
  */
 #define BUTTON_ACTIVE_HIGH (0)
 

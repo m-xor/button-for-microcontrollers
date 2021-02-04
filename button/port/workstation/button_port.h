@@ -10,6 +10,9 @@
 
 #include "button_config.h"
 
+/** \typedef typedef unsigned ButtonPort;
+ *  \brief defines type of input port (platform dependent)
+ */
 typedef unsigned ButtonPort;
 
 /**
@@ -17,6 +20,10 @@ typedef unsigned ButtonPort;
  */
 ButtonPort dummyPort;
 
+/** \fn static inline ButtonPort Button_raw(void)
+ *  \brief reads input port (platform dependend)
+ * @return ButtonPort input port state
+ */
 static inline ButtonPort Button_raw(void)
 {
 	return (dummyPort);

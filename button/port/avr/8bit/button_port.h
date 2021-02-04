@@ -11,14 +11,23 @@
 #include "button_config.h"
 #include <stdint.h>
 
+/** \typedef typedef unsigned ButtonPort;
+ *  \brief defines type of input port (platform dependent)
+ */
 typedef uint8_t ButtonPort;
 
-
+/** \fn static inline ButtonPort Button_raw(void)
+ *  \brief reads input port (platform dependend)
+ * @return ButtonPort input port state
+ */
 static inline ButtonPort Button_raw(void)
 {
 	return BUTTON_IN_PORT;
 }
 
+/** \fn static inline void Button_initInputs(void)
+ *  \brief Helper function to set on pull up
+ */
 static inline void Button_initInputs(void)
 {
 	/* pull up button inputs */
