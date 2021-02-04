@@ -9,17 +9,15 @@
 #define BUTTON_PORT_H_
 
 #include "button_config.h"
+#include <stdint.h>
 
-typedef unsigned ButtonPort;
+typedef uint16_t ButtonPort;
 
-/**
- * Global variable for testing purposes
- */
-ButtonPort dummyPort;
 
 static inline ButtonPort Button_raw(void)
 {
-	return (dummyPort);
+	return BUTTON_IN_PORT->IDR;
 }
+
 
 #endif /* BUTTON_PORT_H_ */

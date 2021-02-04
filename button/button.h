@@ -8,7 +8,6 @@
 #ifndef BUTTON_H_
 #define BUTTON_H_
 
-#include "button_config.h"
 #include "button_port.h"
 
 typedef void (*BtnClbck)(ButtonPort buttons);
@@ -23,8 +22,8 @@ static inline void Button_ctor(Button * const me, BtnClbck pressed, BtnClbck rel
 {
 	me->pressedClbck = pressed;
 	me->releasedClbck = released;
-	me->asserted = (ButtonPort)BUTTON_ACTIVE_LOW;
-	me->previous = (ButtonPort)BUTTON_ACTIVE_LOW;
+	me->asserted = (ButtonPort)(BUTTON_ACTIVE_HIGH^BUTTON_MASK);
+	me->previous = (ButtonPort)(BUTTON_ACTIVE_HIGH^BUTTON_MASK);
 }
 
 static inline void Button_service(Button * const me)
@@ -40,7 +39,7 @@ static inline void Button_service(Button * const me)
 	tmp &= (ButtonPort)BUTTON_MASK;  /* get rid of unneeded bits */
 
 	if(tmp) { /* a button event has occurred */
-		ButtonPort result = me->asserted ^ (ButtonPort)BUTTON_ACTIVE_LOW; /* revert button with reverted logic */
+		ButtonPort result = me->asserted ^ (ButtonPort)(BUTTON_ACTIVE_HIGH^BUTTON_MASK); /* revert button with reverted logic */
 		if( (tmp & result) && me->pressedClbck ) { /* that was pressing */
 			(*me->pressedClbck)(tmp&result);
 		}
@@ -49,6 +48,16 @@ static inline void Button_service(Button * const me)
 		}
 	}
 
+}
+
+static inline void Button_registerPress(Button * const me, BtnClbck press)
+{
+	me->pressedClbck = press;
+}
+
+static inline void Button_registerRelease(Button * const me, BtnClbck release)
+{
+	me->releasedClbck = release;
 }
 
 #endif /* BUTTON_H_ */
